@@ -1,8 +1,25 @@
-require("dotenv").config({ path: "../../config/.env.dev" });
+const path = require("path");
+
+const environment = process.env.NODE_ENV || "development";
+
+require("dotenv").config({
+  path: path.resolve(__dirname, "../../config/.env." + environment),
+});
+
+const sharedConfig = {
+  client: "mysql2",
+  migrations: {
+    tableName: "knex_migrations",
+    directory: path.resolve(__dirname, "./migrations"),
+  },
+  seeds: {
+    directory: path.resolve(__dirname, "./seeds"),
+  },
+};
 
 module.exports = {
   development: {
-    client: "mysql",
+    ...sharedConfig,
     connection: {
       host: process.env.MYSQL_HOST,
       port: process.env.MYSQL_PORT,
@@ -10,12 +27,25 @@ module.exports = {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
     },
-    migrations: {
-      tableName: "knex_migrations",
-      directory: "./migrations", // Relative to the src/db/ directory
+  },
+  test: {
+    ...sharedConfig,
+    connection: {
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
     },
-    seeds: {
-      directory: "./seeds", // Relative to the src/db/ directory
+  },
+  production: {
+    ...sharedConfig,
+    connection: {
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
     },
   },
 };
