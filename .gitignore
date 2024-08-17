@@ -1,0 +1,7 @@
+# Ignore .env files
+.env.dev
+.env.prod
+.env.test
+
+# Ignore node_modules
+node_modules
