@@ -18,6 +18,26 @@ const getAllUsers = async () => {
   }
 };
 
+/**
+ * Async function to get a user by ID
+ *
+ * @param {number} id - User ID
+ * @returns {Promise<Object>} - User object
+ * @throws {Error} - Thrown when an error occurs
+ */
+const getUserById = async (id) => {
+  try {
+    return await knex("users")
+      .where({ id })
+      .first()
+      .select("id", "email", "displayname");
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error getting user by ID");
+  }
+};
+
 module.exports = {
   getAllUsers,
+  getUserById,
 };
