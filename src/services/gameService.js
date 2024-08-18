@@ -1,6 +1,7 @@
 const environment = process.env.NODE_ENV || "development";
 const knexConfig = require("../db/knexfile");
 const knex = require("knex")(knexConfig[environment]);
+const validationHelper = require("../helpers/validationHelper");
 
 /**
  * Async function to get all games
@@ -25,6 +26,10 @@ const getAllGames = async () => {
  */
 const getGameById = async (id) => {
   try {
+    if (!validationHelper.isValidGameId(id)) {
+      throw new Error("Invalid game ID");
+    }
+
     return await knex("games").where({ id }).first();
   } catch (error) {
     console.error(error);

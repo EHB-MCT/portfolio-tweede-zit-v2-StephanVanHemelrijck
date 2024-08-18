@@ -62,7 +62,7 @@ describe("userService", () => {
   });
 
   describe("Create User", () => {
-    it("should create a new user with valid data", async () => {
+    it("should create a new user with valid data and delete the user after creation", async () => {
       const timestamp = Date.now();
       const newUser = {
         email: `unit.test-${timestamp}@outlook.com`,
@@ -85,6 +85,25 @@ describe("userService", () => {
         user.password
       );
       expect(passwordMatch).toBe(true);
+
+      const deletedUser = await userService.deleteUser(user.id);
+    });
+  });
+
+  describe("delete user", () => {
+    it("should delete a user", async () => {
+      const newUser = {
+        email: `user.to.delete@outlook.com`,
+        displayname: "User Delete",
+        password: "plainPassword123@",
+      };
+
+      const user = await userService.createUser(newUser);
+      // Check if user was created
+      expect(user).toHaveProperty("id");
+
+      const deletedUser = await userService.deleteUser(user.id);
+      expect(deletedUser).toEqual(user);
     });
   });
 });

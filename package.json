@@ -8,8 +8,9 @@
     "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
     "seed": "knex seed:run --knexfile src/db/knexfile.js",
     "migrate-and-seed": "npm run migrate && npm run seed",
-    "test": "jest --watchAll",
-    "test:prepare": "cross-env NODE_ENV=test npm run migrate-and-seed"
+    "test:run": "jest --watchAll --detectOpenHandles",
+    "test:prepare": "cross-env NODE_ENV=test npm run migrate-and-seed",
+    "test": "npm run test:prepare && npm run test:run"
   },
   "keywords": [],
   "author": "",

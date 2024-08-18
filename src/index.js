@@ -13,11 +13,12 @@ app.use(express.json());
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/games", require("./routes/gameRoutes"));
 
-app.listen(PORT, (error) => {
-  if (error) {
-    console.error(error);
-    return;
-  }
+module.exports = app;
 
-  console.log(`Server is running on port ${PORT}`);
-});
+// Start the server only if this file is run directly (not during testing)
+if (require.main === module) {
+  const PORT = process.env.APPLICATION_PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}

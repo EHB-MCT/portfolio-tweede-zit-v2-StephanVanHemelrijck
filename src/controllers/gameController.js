@@ -35,6 +35,11 @@ const getGameById = async (req, res) => {
 
   try {
     const game = await gameService.getGameById(id);
+
+    if (!game) {
+      return res.status(404).send("Game not found");
+    }
+
     res.status(200).json(game);
   } catch (error) {
     console.error(error);

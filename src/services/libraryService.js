@@ -12,10 +12,6 @@ const validationHelper = require("../helpers/validationHelper");
  */
 const getGamesInUserLibrary = async (userId) => {
   try {
-    if (!validationHelper.isValidUuid(userId)) {
-      throw new Error("Invalid user ID");
-    }
-
     const games = await knex("user_games")
       .select("game_id", "name")
       .join("games", "user_games.game_id", "games.id")
@@ -46,10 +42,19 @@ const addGameToUserLibrary = async (userId, gameId) => {
   }
 
   try {
+    const user = await knex("users").where({ id: userId }).first();
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const game = await knex("games").where({ id: gameId }).first();
+    if (!game) {
+      throw new Error("Game not found");
+    }
+
     await knex("user_games").insert({ user_id: userId, game_id: gameId });
   } catch (error) {
     console.error(error);
-    throw new Error("Error adding game to user library");
+    throw new Error(error);
   }
 
   return {
@@ -77,6 +82,15 @@ const removeGameFromUserLibrary = async (userId, gameId) => {
   }
 
   try {
+    const user = await knex("users").where({ id: userId }).first();
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const game = await knex("games").where({ id: gameId }).first();
+    if (!game) {
+      throw new Error("Game not found");
+    }
+
     await knex("user_games").where({ user_id: userId, game_id: gameId }).del();
   } catch (error) {
     console.error(error);

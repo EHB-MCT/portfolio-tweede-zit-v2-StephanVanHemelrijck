@@ -19,7 +19,7 @@ describe("libraryService", () => {
 
       if (games.length > 0) {
         games.forEach((game) => {
-          expect(game).toHaveProperty("id");
+          expect(game).toHaveProperty("game_id");
           expect(game).toHaveProperty("name");
         });
       }
@@ -32,7 +32,7 @@ describe("libraryService", () => {
 
       if (games.length > 0) {
         games.forEach((game) => {
-          expect(typeof game.id).toBe("number");
+          expect(typeof game.game_id).toBe("number");
           expect(typeof game.name).toBe("string");
         });
       }
@@ -60,6 +60,18 @@ describe("libraryService", () => {
         userId,
         gameId,
         message: "Game successfully added to user library",
+      });
+
+      // Clean up
+      const remove = await libraryService.removeGameFromUserLibrary(
+        userId,
+        gameId
+      );
+
+      expect(remove).toEqual({
+        userId,
+        gameId,
+        message: "Game successfully removed from user library",
       });
     });
   });

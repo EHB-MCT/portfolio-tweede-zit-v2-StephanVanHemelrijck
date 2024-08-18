@@ -30,10 +30,16 @@ const getAllUsers = async () => {
  */
 const getUserById = async (id) => {
   try {
-    return await knex("users")
+    if (!validationHelper.isValidUuid(id)) {
+      throw new Error("Invalid user ID");
+    }
+
+    const user = await knex("users")
       .where({ id })
       .first()
       .select("id", "email", "displayname");
+
+    return user;
   } catch (error) {
     console.error(error);
     throw new Error("Error getting user by ID");
@@ -109,7 +115,6 @@ const createUser = async (userData) => {
 
     return createdUser;
   } catch (error) {
-    console.error(error);
     throw new Error(`Error creating user: ${error.message}`);
   }
 };
@@ -135,12 +140,6 @@ const loginUser = async (userData) => {
       throw new Error("Invalid email: Email must be a valid email address");
     }
 
-    if (!validationHelper.isValidPassword(userData.password)) {
-      throw new Error(
-        "Invalid password: Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character"
-      );
-    }
-
     const user = await knex("users").where("email", userData.email).first();
 
     if (!user) {
@@ -153,13 +152,39 @@ const loginUser = async (userData) => {
     );
 
     if (!passwordMatch) {
-      throw new Error("Incorrect password");
+      throw new Error("Invalid credentials");
     }
 
     return user;
   } catch (error) {
-    console.error(error);
     throw new Error(`Error logging in user: ${error.message}`);
+  }
+};
+
+/**
+ * Async function to delete a user
+ *
+ * @param {string} id - User ID, the user to delete
+ * @returns {Promise<Object>} - Deleted user object
+ * @throws {Error} - Thrown when an error occurs
+ */
+const deleteUser = async (id) => {
+  try {
+    if (!validationHelper.isValidUuid(id)) {
+      throw new Error("Invalid user ID");
+    }
+
+    const user = await knex("users").where("id", id).first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await knex("users").where("id", id).del();
+
+    return user;
+  } catch (error) {
+    throw new Error(`Error deleting user: ${error.message}`);
   }
 };
 
@@ -168,4 +193,5 @@ module.exports = {
   getUserById,
   createUser,
   loginUser,
+  deleteUser,
 };

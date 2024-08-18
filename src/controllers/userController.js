@@ -1,6 +1,7 @@
 const userService = require("../services/userService");
 const validationHelper = require("../helpers/validationHelper");
 const libraryService = require("../services/libraryService");
+const gameService = require("../services/gameService");
 
 /**
  * Async function to get all users
@@ -36,6 +37,9 @@ const getUserById = async (req, res) => {
 
   try {
     const user = await userService.getUserById(id);
+
+    if (!user) return res.status(404).send("User not found");
+
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -60,7 +64,6 @@ const createUser = async (req, res) => {
     const createdUser = await userService.createUser(userData);
     res.status(201).json(createdUser);
   } catch (error) {
-    console.error(error);
     res.status(500).send(error.message);
   }
 };
@@ -81,7 +84,6 @@ const loginUser = async (req, res) => {
     const user = await userService.loginUser({ email, password });
     res.status(200).json(user);
   } catch (error) {
-    console.error(error);
     res.status(500).send(error.message);
   }
 };
@@ -98,7 +100,11 @@ const getUserLibrary = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const games = await libraryService.getGamesInUserLibrary(userId);
+    const user = await userService.getUserById(userId);
+
+    if (!user) return res.status(404).send("User not found");
+
+    const games = await libraryService.getGamesInUserLibrary(user.id);
     res.status(200).json(games);
   } catch (error) {
     console.error(error);
@@ -120,7 +126,13 @@ const addGameToUserLibrary = async (req, res) => {
   const { gameId } = req.body;
 
   try {
-    const result = await libraryService.addGameToUserLibrary(userId, gameId);
+    const user = await userService.getUserById(userId);
+    if (!user) return res.status(404).send("User not found");
+
+    const game = await gameService.getGameById(gameId);
+    if (!game) return res.status(404).send("Game not found");
+
+    const result = await libraryService.addGameToUserLibrary(user.id, game.id);
     res.status(201).json(result);
   } catch (error) {
     console.error(error);
@@ -142,6 +154,12 @@ const removeGameFromUserLibrary = async (req, res) => {
   const { gameId } = req.body;
 
   try {
+    const user = await userService.getUserById(userId);
+    if (!user) return res.status(404).send("User not found");
+
+    const game = await gameService.getGameById(gameId);
+    if (!game) return res.status(404).send("Game not found");
+
     const result = await libraryService.removeGameFromUserLibrary(
       userId,
       gameId
