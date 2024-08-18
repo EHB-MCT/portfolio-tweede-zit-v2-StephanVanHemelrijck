@@ -114,8 +114,58 @@ const createUser = async (userData) => {
   }
 };
 
+/**
+ * Async function to login a user
+ *
+ * @param {Object} userData - User data
+ * @param {string} userData.email - User email
+ * @param {string} userData.password - User password
+ * @returns {Promise<Object>} - Logged in user object
+ * @throws {Error} - Thrown when an error occurs
+ */
+const loginUser = async (userData) => {
+  try {
+    const isUserDataValid = validationHelper.validateLoginUserData(userData);
+
+    if (!isUserDataValid) {
+      throw new Error("Invalid user data: Missing email or password");
+    }
+
+    if (!validationHelper.isValidEmail(userData.email)) {
+      throw new Error("Invalid email: Email must be a valid email address");
+    }
+
+    if (!validationHelper.isValidPassword(userData.password)) {
+      throw new Error(
+        "Invalid password: Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character"
+      );
+    }
+
+    const user = await knex("users").where("email", userData.email).first();
+
+    if (!user) {
+      throw new Error("User not found with that email address");
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      userData.password,
+      user.password
+    );
+
+    if (!passwordMatch) {
+      throw new Error("Incorrect password");
+    }
+
+    return user;
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Error logging in user: ${error.message}`);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
+  loginUser,
 };

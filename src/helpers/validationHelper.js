@@ -87,6 +87,29 @@ function isValidPassword(password) {
   return isString(password) && regex.test(password);
 }
 
+/**
+ * Function to validate user data when logging in,
+ * the user data must contain the following fields: email, password
+ * and must be strings
+ *
+ * @param {*} userData - The user data to validate
+ * @returns {boolean} - Returns true if the user data is valid, false otherwise
+ */
+function validateLoginUserData(userData) {
+  console.log(userData);
+
+  if (!userData.email || !userData.password) {
+    console.error(
+      "Validation error: Missing required fields email or password"
+    );
+    return false;
+  }
+
+  if (!isString(userData.email) || !isString(userData.password)) return false;
+
+  return true;
+}
+
 module.exports = {
   isString,
   isValidId,
@@ -94,4 +117,5 @@ module.exports = {
   isValidEmail,
   isValidDisplayname,
   isValidPassword,
+  validateLoginUserData,
 };

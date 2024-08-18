@@ -86,3 +86,34 @@ describe("validationHelper.isValidPassword", () => {
     expect(validationHelper.isValidPassword("Password123!@")).toBe(true);
   });
 });
+
+describe("validationHelper.validateLoginUserData", () => {
+  it("should have email and password params and be valid properties", () => {
+    expect(
+      validationHelper.validateLoginUserData({
+        email: "",
+      })
+    ).toBe(false);
+
+    expect(
+      validationHelper.validateLoginUserData({
+        email: "",
+        password: "",
+      })
+    ).toBe(false);
+
+    expect(
+      validationHelper.validateLoginUserData({
+        email: 1,
+        password: 1234,
+      })
+    ).toBe(false);
+
+    expect(
+      validationHelper.validateLoginUserData({
+        email: "john.doe@example.com",
+        password: "password",
+      })
+    ).toBe(true);
+  });
+});

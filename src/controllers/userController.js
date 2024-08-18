@@ -67,8 +67,31 @@ const createUser = async (req, res) => {
   }
 };
 
+/**
+ * Async function to login a user
+ *
+ * @param {Object} req - Express request object
+ * @param {string} req.body.email - User email
+ * @param {string} req.body.password - User password
+ * @param {Object} res - Express response object
+ * @returns {Object} - Logged in user object
+ * @throws {Error} - Thrown when an error occurs
+ */
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await userService.loginUser({ email, password });
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
+  loginUser,
 };
