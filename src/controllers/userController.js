@@ -7,7 +7,6 @@ const validationHelper = require("../helpers/validationHelper");
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns {Array<Object>} - Array of user objects
- * @throws {Error} - Thrown when an error occurs
  */
 const getAllUsers = async (req, res) => {
   try {

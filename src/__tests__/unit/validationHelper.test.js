@@ -7,6 +7,13 @@ describe("validationHelper.isString", () => {
   });
 });
 
+describe("validationHelper.isNumber", () => {
+  it("should be of type number", () => {
+    expect(validationHelper.isNumber(123)).toBe(true);
+    expect(validationHelper.isNumber("123")).toBe(false);
+  });
+});
+
 describe("validationHelper.isValidId", () => {
   it("should be a valid UUIDv4", () => {
     expect(
@@ -115,5 +122,14 @@ describe("validationHelper.validateLoginUserData", () => {
         password: "password",
       })
     ).toBe(true);
+  });
+});
+
+describe("validationHelper.isValidGameId", () => {
+  it("should be a valid game ID", () => {
+    expect(validationHelper.isValidGameId("")).toBe(false);
+    expect(validationHelper.isValidGameId("abcd")).toBe(false);
+
+    expect(validationHelper.isValidGameId(123)).toBe(true);
   });
 });
