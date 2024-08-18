@@ -1,4 +1,5 @@
 const userService = require("../../services/userService");
+const bcrypt = require("bcrypt");
 
 describe("userService", () => {
   describe("Get all users", () => {
@@ -57,6 +58,33 @@ describe("userService", () => {
     it("given ID should match user ID", async () => {
       const user = await userService.getUserById(knownUserId);
       expect(user.id).toBe(knownUserId);
+    });
+  });
+
+  describe("Create User", () => {
+    it("should create a new user with valid data", async () => {
+      const timestamp = Date.now();
+      const newUser = {
+        email: `unit.test-${timestamp}@outlook.com`,
+        displayname: "Unit tester",
+        password: "plainPassword123@",
+      };
+
+      const user = await userService.createUser(newUser);
+
+      expect(user).toHaveProperty("id");
+      expect(user).toHaveProperty("email");
+      expect(user).toHaveProperty("displayname");
+      expect(user).toHaveProperty("password");
+
+      expect(user.email).toBe(newUser.email);
+      expect(user.displayname).toBe(newUser.displayname);
+
+      const passwordMatch = await bcrypt.compare(
+        newUser.password,
+        user.password
+      );
+      expect(passwordMatch).toBe(true);
     });
   });
 });

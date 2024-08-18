@@ -14,8 +14,15 @@ router.get("/", userController.getAllUsers);
  * GET endpoint, route that gets a user by ID
  *
  * @name GET /users/:id
- * @param {string} id - User ID (UUIDv4)
+ * @param {string} req.param.id - User ID (UUIDv4)
  */
 router.get("/:id", userController.getUserById);
+
+/**
+ * POST endpoint, route that creates a new user
+ *
+ * @name POST /users
+ */
+router.post("/", userController.createUser);
 
 module.exports = router;

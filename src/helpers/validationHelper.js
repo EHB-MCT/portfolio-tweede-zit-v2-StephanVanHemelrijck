@@ -25,7 +25,73 @@ function isValidId(id) {
   return isString(id) && regex.test(id);
 }
 
+/**
+ * Function to validate user data when creating a new user,
+ * the user data must contain the following fields: email, displayname, password
+ *
+ * @param {*} userData - The user data to validate
+ * @returns {boolean} - Returns true if the user data is valid, false otherwise
+ */
+function validateCreateUserData(userData) {
+  // Check if userData has the required fields
+  if (!userData.email || !userData.displayname || !userData.password) {
+    console.error("Validation error: Missing required fields.");
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Function to validate an email address.
+ * The email must follow the standard format:
+ * - [name]@[domain].[tld]
+ * - [name] can contain letters, numbers, and the special characters "." and "-"
+ * - [domain] can contain letters, numbers, and hyphens
+ * - [tld] must be at least 2 characters long and contain only letters
+ *
+ * @param {string} email - The email address to validate
+ * @returns {boolean} - Returns true if the email is valid, false otherwise
+ */
+function isValidEmail(email) {
+  const regex = new RegExp(/^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/); // email regex
+
+  return isString(email) && regex.test(email);
+}
+
+/**
+ * Function to validate a displayname, it must be at least 3 characters long
+ * and at most 25 characters long, and can only contain letters, and spaces
+ *
+ * @param {string} displayname - The displayname to validate
+ * @returns {boolean} - Returns true if the displayname is valid, false otherwise
+ */
+function isValidDisplayname(displayname) {
+  const regex = new RegExp(/^[a-zA-Z ]{3,25}$/);
+
+  return isString(displayname) && regex.test(displayname);
+}
+
+/**
+ * Function to validate a password, it must be at least 8 characters long,
+ * have at least one uppercase letter, one number, and one special character
+ *
+ * @param {string} password - The password to validate
+ * @returns {boolean} - Returns true if the password is valid, false otherwise
+ */
+function isValidPassword(password) {
+  const regex = new RegExp(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/
+  );
+
+  return isString(password) && regex.test(password);
+}
+
 module.exports = {
   isString,
   isValidId,
+  validateCreateUserData,
+  isValidEmail,
+  isValidDisplayname,
+  isValidPassword,
 };

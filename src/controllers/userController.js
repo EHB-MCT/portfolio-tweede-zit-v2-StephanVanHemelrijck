@@ -44,7 +44,31 @@ const getUserById = async (req, res) => {
   }
 };
 
+/**
+ * Async function to create a new user
+ *
+ * @param {Object} req - Express request object
+ * @param {string} req.body.email - User email
+ * @param {string} req.body.displayname - User displayname
+ * @param {string} req.body.password - User password
+ * @param {Object} res - Express response object
+ * @returns {Object} - Created user object
+ * @throws {Error} - Thrown when an error occurs
+ */
+const createUser = async (req, res) => {
+  const userData = req.body;
+
+  try {
+    const createdUser = await userService.createUser(userData);
+    res.status(201).json(createdUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
+  createUser,
 };

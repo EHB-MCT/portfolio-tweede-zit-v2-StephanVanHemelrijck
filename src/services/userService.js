@@ -1,6 +1,9 @@
 const environment = process.env.NODE_ENV || "development";
 const knexConfig = require("../db/knexfile");
 const knex = require("knex")(knexConfig[environment]);
+const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
+const validationHelper = require("../helpers/validationHelper");
 
 /**
  * Async function to get all users
@@ -37,7 +40,82 @@ const getUserById = async (id) => {
   }
 };
 
+/**
+ * Async function to create a new user
+ *
+ * @param {Object} userData - User data
+ * @param {string} userData.email - User email
+ * @param {string} userData.displayname - User displayname
+ * @param {string} userData.password - User password
+ * @returns {Promise<Object>} - Created user object
+ * @throws {Error} - Thrown when an error occurs
+ */
+const createUser = async (userData) => {
+  try {
+    const isUserDataValid = validationHelper.validateCreateUserData(userData);
+
+    if (!isUserDataValid) {
+      throw new Error(
+        "Invalid user data: Missing email, displayname, or password"
+      );
+    }
+
+    if (!validationHelper.isValidEmail(userData.email)) {
+      throw new Error("Invalid email: Email must be a valid email address");
+    }
+
+    if (!validationHelper.isValidDisplayname(userData.displayname)) {
+      throw new Error(
+        "Invalid displayname: Displayname must be between 3 and 25 characters long and contain only letters and spaces"
+      );
+    }
+
+    if (!validationHelper.isValidPassword(userData.password)) {
+      throw new Error(
+        "Invalid password: Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character"
+      );
+    }
+
+    // check for duplicate
+    const existingUser = await knex("users")
+      .where("email", userData.email)
+      .first();
+
+    if (existingUser) {
+      throw new Error("User already exists with that email address");
+    }
+
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    const newUser = {
+      id: uuidv4(),
+      email: userData.email,
+      displayname: userData.displayname,
+      password: hashedPassword,
+    };
+
+    try {
+      await knex("users").insert(newUser);
+    } catch (dbError) {
+      console.error("Database insertion error:", dbError);
+      throw new Error("Error inserting user into database");
+    }
+
+    const createdUser = await knex("users").where({ id: newUser.id }).first();
+
+    if (!createdUser) {
+      throw new Error("User creation failed: User not found after insertion.");
+    }
+
+    return createdUser;
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Error creating user: ${error.message}`);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
+  createUser,
 };
