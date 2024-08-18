@@ -59,7 +59,36 @@ const addGameToUserLibrary = async (userId, gameId) => {
   };
 };
 
-const removeGameFromUserLibrary = async (userId, gameId) => {};
+/**
+ * Async function to remove a game from a user's library
+ *
+ * @param {string} userId - User ID - the ID of the user to remove the game from
+ * @param {string} gameId - Game ID - the ID of the game to remove from the user's library
+ * @returns {Object} - Object containing the user ID, game ID, and a message
+ * @throws {Error} - Thrown when an error occurs
+ */
+const removeGameFromUserLibrary = async (userId, gameId) => {
+  if (!validationHelper.isValidUuid(userId)) {
+    throw new Error("Invalid user ID");
+  }
+
+  if (!validationHelper.isValidGameId(gameId)) {
+    throw new Error("Invalid game ID");
+  }
+
+  try {
+    await knex("user_games").where({ user_id: userId, game_id: gameId }).del();
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error removing game from user library");
+  }
+
+  return {
+    userId,
+    gameId,
+    message: "Game successfully removed from user library",
+  };
+};
 
 module.exports = {
   getGamesInUserLibrary,

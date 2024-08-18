@@ -52,4 +52,16 @@ router.get("/:userId/library", userController.getUserLibrary);
  */
 router.post("/:userId/library/add", userController.addGameToUserLibrary);
 
+/**
+ * DELETE endpoint, route that removes a game from a user's library
+ *
+ * @name DELETE api/users/:userId/library/remove
+ * @param {string} req.params.userId - User ID
+ * @param {string} req.body.gameId - Game ID
+ */
+router.delete(
+  "/:userId/library/remove",
+  userController.removeGameFromUserLibrary
+);
+
 module.exports = router;

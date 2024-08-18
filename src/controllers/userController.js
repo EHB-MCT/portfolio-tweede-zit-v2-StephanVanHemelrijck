@@ -128,6 +128,31 @@ const addGameToUserLibrary = async (req, res) => {
   }
 };
 
+/**
+ * Async function to remove a game from a user's library
+ *
+ * @param {Object} req - Express request object
+ * @param {string} req.params.userId - User ID
+ * @param {string} req.body.gameId - Game ID
+ * @param {Object} res - Express response object
+ * @returns {Object} - Object containing the user ID, game ID, and a message
+ */
+const removeGameFromUserLibrary = async (req, res) => {
+  const { userId } = req.params;
+  const { gameId } = req.body;
+
+  try {
+    const result = await libraryService.removeGameFromUserLibrary(
+      userId,
+      gameId
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -135,4 +160,5 @@ module.exports = {
   loginUser,
   getUserLibrary,
   addGameToUserLibrary,
+  removeGameFromUserLibrary,
 };
