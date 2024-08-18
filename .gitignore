@@ -1,5 +1,5 @@
 # Ignore .env files
-.env.dev
+.env.development
 .env.prod
 .env.test
 
