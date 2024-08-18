@@ -24,7 +24,7 @@ function isNumber(number) {
  * @param {string} id - ID to check
  * @returns {boolean} - Returns true if the ID is a valid UUIDv4, false otherwise
  */
-function isValidId(id) {
+function isValidUuid(id) {
   // check if the id is a string
   // check if the id is a uuidv4
 
@@ -45,7 +45,6 @@ function isValidId(id) {
 function validateCreateUserData(userData) {
   // Check if userData has the required fields
   if (!userData.email || !userData.displayname || !userData.password) {
-    console.error("Validation error: Missing required fields.");
     return false;
   }
 
@@ -106,12 +105,7 @@ function isValidPassword(password) {
  * @returns {boolean} - Returns true if the user data is valid, false otherwise
  */
 function validateLoginUserData(userData) {
-  console.log(userData);
-
   if (!userData.email || !userData.password) {
-    console.error(
-      "Validation error: Missing required fields email or password"
-    );
     return false;
   }
 
@@ -135,7 +129,7 @@ function isValidGameId(id) {
 module.exports = {
   isString,
   isNumber,
-  isValidId,
+  isValidUuid,
   validateCreateUserData,
   isValidEmail,
   isValidDisplayname,

@@ -52,6 +52,7 @@ describe("gameService", () => {
 
     it("given ID should match game ID", async () => {
       const game = await gameService.getGameById(knownGameId);
+
       expect(game.id).toBe(knownGameId);
     });
   });

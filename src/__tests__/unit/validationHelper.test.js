@@ -14,16 +14,16 @@ describe("validationHelper.isNumber", () => {
   });
 });
 
-describe("validationHelper.isValidId", () => {
+describe("validationHelper.isValidUuid", () => {
   it("should be a valid UUIDv4", () => {
     expect(
-      validationHelper.isValidId("59230b3f-8608-4fc3-9f15-c016d1fe632b")
+      validationHelper.isValidUuid("59230b3f-8608-4fc3-9f15-c016d1fe632b")
     ).toBe(true);
 
-    expect(validationHelper.isValidId("123")).toBe(false);
-    expect(validationHelper.isValidId("")).toBe(false);
-    expect(validationHelper.isValidId(123)).toBe(false);
-    expect(validationHelper.isValidId("abcd-efgh-ijkl-mnop")).toBe(false);
+    expect(validationHelper.isValidUuid("123")).toBe(false);
+    expect(validationHelper.isValidUuid("")).toBe(false);
+    expect(validationHelper.isValidUuid(123)).toBe(false);
+    expect(validationHelper.isValidUuid("abcd-efgh-ijkl-mnop")).toBe(false);
   });
 });
 
