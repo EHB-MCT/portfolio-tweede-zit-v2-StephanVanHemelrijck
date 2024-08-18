@@ -9,6 +9,16 @@ function isString(string) {
 }
 
 /**
+ * Check if the value is a number
+ *
+ * @param {any} number - Value to check
+ * @returns {boolean} - Returns true if the value is a number, false otherwise
+ */
+function isNumber(number) {
+  return typeof number === "number";
+}
+
+/**
  * Check if the value is a valid UUIDv4
  *
  * @param {string} id - ID to check
@@ -110,12 +120,26 @@ function validateLoginUserData(userData) {
   return true;
 }
 
+/**
+ * Function to validate a game ID, it must be a number, or a string that contains only numbers
+ *
+ * @param {number} id - The game ID to validate
+ * @returns {boolean} - Returns true if the game ID is valid, false otherwise
+ */
+function isValidGameId(id) {
+  const regex = new RegExp(/^\d+$/); // number regex
+
+  return isNumber(id) || regex.test(id);
+}
+
 module.exports = {
   isString,
+  isNumber,
   isValidId,
   validateCreateUserData,
   isValidEmail,
   isValidDisplayname,
   isValidPassword,
   validateLoginUserData,
+  isValidGameId,
 };
