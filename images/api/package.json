@@ -1,0 +1,35 @@
+{
+  "name": "portfolio-tweede-zit-v2-stephanvanhemelrijck",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run setup-database && npm run migrate-and-seed && node src/index.js",
+    "dev": "npm run setup-database && npm run migrate-and-seed && npm run server",
+    "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
+    "seed": "knex seed:run --knexfile src/db/knexfile.js",
+    "migrate-and-seed": "npm run migrate && npm run seed",
+    "test:run": "jest --watchAll --detectOpenHandles",
+    "test:prepare": "cross-env NODE_ENV=test npm run migrate-and-seed",
+    "test": "npm run setup-database && npm run test:prepare && npm run test:run",
+    "server": "nodemon src/index.js",
+    "setup-database": "node src/db/setupDatabase.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "knex": "^3.1.0",
+    "mysql2": "^3.11.0",
+    "nodemon": "^3.1.4",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}

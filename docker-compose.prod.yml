@@ -1,0 +1,31 @@
+services:
+  api:
+    build: ./images/api
+    ports:
+      - 3000:3000
+    volumes:
+      - ./images/api/src:/usr/app/src
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ./images/config/.env.production
+    depends_on:
+      store:
+        condition: service_healthy
+    command: ["npm", "run", "start"]
+
+  store:
+    image: mysql:latest
+    restart: on-failure
+    ports:
+      - 3306:3306
+    volumes:
+      - ./_prod_mysql_data:/var/lib/mysql/data
+    env_file:
+      - ./images/config/.env.production
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
