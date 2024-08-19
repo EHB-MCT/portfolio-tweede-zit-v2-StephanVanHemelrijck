@@ -64,15 +64,15 @@ To run this project, you need to have Docker and Docker Compose installed on you
 
 ### User Endpoints
 
-| Method | Endpoint                     | Description                                 | Request Parameters                       |
-| ------ | ---------------------------- | ------------------------------------------- | ---------------------------------------- |
-| GET    | /api/users                   | Retrieves all users                         | /                                        |
-| GET    | /api/users/{id}              | Retrieves a specific user by ID (UUIDv4)    | params: `id`                             |
-| POST   | /api/users/                  | Creates a new user                          | body: `email`, `displayname`, `password` |
-| POST   | /api/users/login             | Logs in a user                              | body: `email`, `password`                |
-| GET    | /api/{userId}/library        | Retrieves all the games in a user's library | params: `userId`                         |
-| POST   | /api/{userId}/library/add    | Add a game to the user's library            | params: {userId} , body: `gameId`        |
-| DELETE | /api/{userId}/library/remove | Remove a game from the user's library       | params: {userId}, body: {gameId}         |
+| Method | Endpoint                           | Description                                 | Request Parameters                       |
+| ------ | ---------------------------------- | ------------------------------------------- | ---------------------------------------- |
+| GET    | /api/users                         | Retrieves all users                         | /                                        |
+| GET    | /api/users/{id}                    | Retrieves a specific user by ID (UUIDv4)    | params: `id`                             |
+| POST   | /api/users/                        | Creates a new user                          | body: `email`, `displayname`, `password` |
+| POST   | /api/users/login                   | Logs in a user                              | body: `email`, `password`                |
+| GET    | /api/users/{userId}/library        | Retrieves all the games in a user's library | params: `userId`                         |
+| POST   | /api/users/{userId}/library/add    | Add a game to the user's library            | params: {userId} , body: `gameId`        |
+| DELETE | /api/users/{userId}/library/remove | Remove a game from the user's library       | params: {userId}, body: {gameId}         |
 
 ### Game Endpoints
 
