@@ -4,13 +4,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "dev": "npm run migrate-and-seed && npm run server",
     "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
     "seed": "knex seed:run --knexfile src/db/knexfile.js",
     "migrate-and-seed": "npm run migrate && npm run seed",
     "test:run": "jest --watchAll --detectOpenHandles",
     "test:prepare": "cross-env NODE_ENV=test npm run migrate-and-seed",
-    "test": "npm run test:prepare && npm run test:run"
+    "test": "npm run test:prepare && npm run test:run",
+    "server": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "express": "^4.19.2",
     "knex": "^3.1.0",
     "mysql2": "^3.11.0",
+    "nodemon": "^3.1.4",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
