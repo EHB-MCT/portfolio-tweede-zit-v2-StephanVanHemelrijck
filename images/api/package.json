@@ -4,14 +4,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "npm run migrate-and-seed && npm run server",
+    "dev": "npm run setup-database && npm run migrate-and-seed && npm run server",
     "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
     "seed": "knex seed:run --knexfile src/db/knexfile.js",
     "migrate-and-seed": "npm run migrate && npm run seed",
     "test:run": "jest --watchAll --detectOpenHandles",
     "test:prepare": "cross-env NODE_ENV=test npm run migrate-and-seed",
-    "test": "npm run test:prepare && npm run test:run",
-    "server": "nodemon src/index.js"
+    "test": "npm run setup-database && npm run test:prepare && npm run test:run",
+    "server": "nodemon src/index.js",
+    "setup-database": "node src/db/setupDatabase.js"
   },
   "keywords": [],
   "author": "",
