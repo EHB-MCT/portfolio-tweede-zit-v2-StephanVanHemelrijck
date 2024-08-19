@@ -6,13 +6,13 @@ services:
     volumes:
       - ./images/api/src:/usr/app/src
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
     env_file:
-      - ./images/config/.env.development
+      - ./images/config/.env.production
     depends_on:
       store:
         condition: service_healthy
-    command: ["npm", "run", "dev"]
+    command: ["npm", "run", "start"]
 
   store:
     image: mysql:latest
@@ -20,9 +20,9 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./_dev_mysql_data:/var/lib/mysql/data
+      - ./_prod_mysql_data:/var/lib/mysql/data
     env_file:
-      - ./images/config/.env.development
+      - ./images/config/.env.production
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
       interval: 10s

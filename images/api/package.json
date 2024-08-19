@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "npm run setup-database && npm run migrate-and-seed && node src/index.js",
     "dev": "npm run setup-database && npm run migrate-and-seed && npm run server",
     "migrate": "knex migrate:latest --knexfile src/db/knexfile.js",
     "seed": "knex seed:run --knexfile src/db/knexfile.js",

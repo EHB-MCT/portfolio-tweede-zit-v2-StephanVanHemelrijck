@@ -21,12 +21,8 @@ services:
       - 3307:3306
     volumes:
       - ./_test_mysql_data:/var/lib/mysql/data
-    environment:
-      MYSQL_HOST: store
-      MYSQL_PORT: 3306
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DATABASE: portfolio-test
+    env_file:
+      - ./images/config/.env.test
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
       interval: 10s
