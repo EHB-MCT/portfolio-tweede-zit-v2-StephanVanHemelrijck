@@ -1,6 +1,6 @@
 # Ignore .env files
 .env.development
-.env.prod
+.env.production
 .env.test
 
 # Ignore node_modules
