@@ -6,9 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-- Placeholder for future updates and features.
+- feat(library): Provide a way to view other libraries.
 
 ## [1.0.0] - 2024-08-19
+
+[View Release](https://github.com/EHB-MCT/portfolio-tweede-zit-v2-StephanVanHemelrijck/releases/tag/1.0.0)
 
 ### Added
 
